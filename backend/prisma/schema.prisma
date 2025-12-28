@@ -1,0 +1,121 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  password  String
+  firstName String
+  lastName  String
+  phone     String?
+  avatar    String?
+  
+  // Relations
+  sessions  Session[]
+  payments  Payment[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("users")
+}
+
+model ParkingMeter {
+  id        String     @id @default(cuid())
+  location  String
+  latitude  Float
+  longitude Float
+  
+  // Pricing
+  ratePerHour   Float
+  maxDuration   Int      // in minutes
+  available     Boolean  @default(true)
+  
+  // Metadata
+  zone          String?
+  description   String?
+  imageUrl      String?
+  
+  // Relations
+  sessions  Session[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("parking_meters")
+}
+
+model Session {
+  id        String     @id @default(cuid())
+  
+  userId    String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  meterId   String
+  meter     ParkingMeter @relation(fields: [meterId], references: [id])
+  
+  // Session details
+  startTime DateTime
+  endTime   DateTime?
+  estimatedCost Float
+  actualCost     Float?
+  status    String     @default("active") // active, completed, cancelled
+  
+  // Relations
+  payment   Payment?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("sessions")
+}
+
+model Payment {
+  id        String     @id @default(cuid())
+  
+  userId    String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  sessionId String     @unique
+  session   Session    @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  
+  // Payment details
+  amount           Float
+  currency         String  @default("USD")
+  status           String  @default("pending") // pending, completed, failed
+  paymentMethod    String
+  transactionId    String?
+  receiptUrl       String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("payments")
+}
+
+model Notification {
+  id        String     @id @default(cuid())
+  
+  userId    String
+  
+  // Notification details
+  title     String
+  message   String
+  type      String     // email, push, sms
+  status    String     @default("pending") // pending, sent, failed
+  sentAt    DateTime?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("notifications")
+}

@@ -1,0 +1,86 @@
+name: parking_finder
+description: "A mobile and web application for finding and managing parking spaces."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # State Management
+  provider: ^6.0.0
+  riverpod: ^2.0.0
+  hooks_riverpod: ^2.0.0
+  
+  # API & Networking
+  dio: ^5.0.0
+  retrofit: ^4.0.0
+  json_serializable: ^6.0.0
+  
+  # Local Storage
+  hive: ^2.0.0
+  hive_flutter: ^1.1.0
+  shared_preferences: ^2.2.0
+  
+  # Authentication
+  jwt_decoder: ^2.0.0
+  
+  # UI & Themes
+  flutter_screenutil: ^5.9.0
+  cached_network_image: ^3.3.0
+  
+  # Maps
+  google_maps_flutter: ^2.5.0
+  geolocator: ^9.0.0
+  location: ^5.0.0
+  
+  # Notifications
+  firebase_core: ^2.24.0
+  firebase_messaging: ^14.6.0
+  
+  # Date & Time
+  intl: ^0.19.0
+  
+  # Utils
+  uuid: ^4.0.0
+  connectivity_plus: ^5.0.0
+  logger: ^2.0.0
+  get_it: ^7.6.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+  
+  # Code Generation
+  build_runner: ^2.4.0
+  retrofit_generator: ^7.0.0
+  
+  # Testing
+  mockito: ^5.4.0
+  mocktail: ^1.0.0
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/fonts/
+    
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Poppins-Light.ttf
+          weight: 300
